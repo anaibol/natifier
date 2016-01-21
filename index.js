@@ -1,10 +1,14 @@
 'use strict';
 
+// import { app, BrowserWindow, Menu, Tray } from 'electron'
+
 const electron = require('electron');
 // Module to control application life.
 const app = electron.app;
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow;
+const Tray = electron.Tray;
+const Menu = electron.Menu;
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -12,21 +16,36 @@ let mainWindow;
 
 function createWindow () {
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 1900, height: 1080, title: 'Arch Maps', autoHideMenuBar: true});
+  const win = new BrowserWindow({width: 1900, height: 1080, title: 'Arch Maps', autoHideMenuBar: true});
+
+  const appIcon = new Tray('./icon.png');
+
+  appIcon.setToolTip('This is my application.');
+
+  // Show window and remove tray when clicked
+  appIcon.on('click', function() {
+    win.show();
+    // this.remove();
+  });
 
   // and load the index.html of the app.
   // mainWindow.loadURL('file://' + __dirname + '/index.html');
-  mainWindow.loadURL('https://www.google.fr/maps/@48.866051,2.3565218,15z?hl=es-419');
+  win.loadURL('https://www.google.fr/maps/@48.866051,2.3565218,15z?hl=es-419');
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools();
 
   // Emitted when the window is closed.
-  mainWindow.on('closed', function() {
+  win.on('closed', function() {
     // Dereference the window object, usually you would store windows
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
     mainWindow = null;
+  });
+
+  win.on('minimize', function() {
+    // Hide window
+    this.hide();
   });
 }
 

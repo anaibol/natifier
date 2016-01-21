@@ -14,7 +14,7 @@ const Menu = electron.Menu;
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 
-function createWindow () {
+function createWindow (url) {
   // Create the browser window.
   const win = new BrowserWindow({width: 1900, height: 1080, title: 'Arch Maps', autoHideMenuBar: true});
 
@@ -30,7 +30,7 @@ function createWindow () {
 
   // and load the index.html of the app.
   // mainWindow.loadURL('file://' + __dirname + '/index.html');
-  win.loadURL('https://www.google.fr/maps/@48.866051,2.3565218,15z?hl=es-419');
+  win.loadURL(url);
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools();
@@ -43,29 +43,50 @@ function createWindow () {
     mainWindow = null;
   });
 
+  win.on('close', function(e) {
+    e.preventDefault()
+    this.hide()
+  });
+
+
   win.on('minimize', function() {
-    // Hide window
     this.hide();
   });
 }
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
-app.on('ready', createWindow);
+app.on('ready', function() {
+  createWindow('https://www.google.fr/maps/@48.866051,2.3565218,15z?hl=es-419')
+});
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {
   // On OS X it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
   if (process.platform !== 'darwin') {
-    app.quit();
+    // app.quit();
   }
 });
 
-app.on('activate', function () {
-  // On OS X it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
-  if (mainWindow === null) {
-    createWindow();
-  }
+// app.on('activate', function () {
+//   // On OS X it's common to re-create a window in the app when the
+//   // dock icon is clicked and there are no other windows open.
+//   if (mainWindow === null) {
+//     createWindow();
+//   }
+// });
+
+var shouldQuit = app.makeSingleInstance(function(commandLine, workingDirectory) {
+  // Someone tried to run a second instance, we should focus our window.
+  // if (myWindow) {
+  //   if (myWindow.isMinimized()) myWindow.restore();
+  //   myWindow.focus();
+  // }
+  return true;
 });
+
+if (shouldQuit) {
+  app.quit();
+  return;
+}

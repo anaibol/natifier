@@ -3,6 +3,8 @@ import BrowserWindow from 'browser-window'
 import Menu from 'menu'
 import Tray from 'tray'
 
+import { argv } from 'yargs'
+
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
@@ -10,7 +12,7 @@ let mainWindow
 function createWindow (url) {
   // Create the browser window.
   const win = new BrowserWindow({width: 1900, height: 1080, title: 'Arch Maps', autoHideMenuBar: true})
-  const appIcon = new Tray('./icon.png')
+  const appIcon = new Tray('./icon2.png')
 
   appIcon.setToolTip('This is my application.')
 
@@ -49,7 +51,8 @@ function createWindow (url) {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 app.on('ready', () => {
-  createWindow('https://www.google.fr/maps/@48.866051,2.3565218,15z?hl=es-419')
+  createWindow(argv.url)
+  createWindow(argv.url)
 })
 
 // Quit when all windows are closed.
@@ -69,16 +72,21 @@ app.on('window-all-closed', function () {
 //   }
 // })
 
-var shouldQuit = app.makeSingleInstance(function(commandLine, workingDirectory) {
+var shouldQuit = app.makeSingleInstance((commandLine, workingDirectory) => {
   // Someone tried to run a second instance, we should focus our window.
   // if (myWindow) {
   //   if (myWindow.isMinimized()) myWindow.restore()
   //   myWindow.focus()
   // }
-  return true
+  console.log(commandLine);
+  console.log(workingDirectory);
+
+  // createWindow(argv.url)
+  // app.quit()
+  // return false
 })
 
 // if (shouldQuit) {
 //   app.quit()
-//   return
+//   // return
 // }

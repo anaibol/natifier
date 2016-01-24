@@ -5,10 +5,6 @@ import Tray from 'tray'
 
 import { argv } from 'yargs'
 
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
-let mainWindow
-
 function createWindow (url) {
   // Create the browser window.
   const win = new BrowserWindow({width: 1900, height: 1080, title: 'Arch Maps', autoHideMenuBar: true})
@@ -16,15 +12,12 @@ function createWindow (url) {
   win.loadURL(url)
   // win.loadURL('file://' + __dirname + '/index.html')
 
-  // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
-
   // Emitted when the window is closed.
   win.on('closed', () => {
     // Dereference the window object, usually you would store windows
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
-    mainWindow = null
+    win = null
   })
 
   win.on('close', function(e) {
@@ -66,7 +59,7 @@ app.on('window-all-closed', function () {
 // app.on('activate', function () {
 //   // On OS X it's common to re-create a window in the app when the
 //   // dock icon is clicked and there are no other windows open.
-//   if (mainWindow === null) {
+//   if (win === null) {
 //     createWindow()
 //   }
 // })

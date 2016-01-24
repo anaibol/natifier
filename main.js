@@ -12,19 +12,9 @@ let mainWindow
 function createWindow (url) {
   // Create the browser window.
   const win = new BrowserWindow({width: 1900, height: 1080, title: 'Arch Maps', autoHideMenuBar: true})
-  const appIcon = new Tray('./icon2.png')
 
-  appIcon.setToolTip('This is my application.')
-
-  // Show window and remove tray when clicked
-  appIcon.on('click', () => {
-    win.show()
-    // this.remove()
-  })
-
-  // and load the index.html of the app.
-  // mainWindow.loadURL('file://' + __dirname + '/index.html')
   win.loadURL(url)
+  // win.loadURL('file://' + __dirname + '/index.html')
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
@@ -51,7 +41,16 @@ function createWindow (url) {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 app.on('ready', () => {
-  createWindow(argv.url)
+  const appIcon = new Tray('./icon2.png')
+
+  appIcon.setToolTip('This is my application.')
+
+  // Show window and remove tray when clicked
+  appIcon.on('click', () => {
+    win.show()
+    // this.remove()
+  })
+
   createWindow(argv.url)
 })
 
@@ -83,7 +82,7 @@ var shouldQuit = app.makeSingleInstance((commandLine, workingDirectory) => {
 
   // createWindow(argv.url)
   // app.quit()
-  // return false
+  return false
 })
 
 // if (shouldQuit) {

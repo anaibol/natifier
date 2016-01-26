@@ -1,5 +1,5 @@
 {
-  "name": "goo-maps",
+  "name": "natifier",
   "version": "1.0.3",
   "description": "Google Maps",
   "main": ".",
@@ -8,19 +8,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/anaibol/goo-maps.git"
+    "url": "git+https://github.com/anaibol/natifier.git"
   },
   "keywords": [],
   "author": "GitHub",
   "license": "",
   "bugs": {
-    "url": "https://github.com/anaibol/goo-maps/issues"
+    "url": "https://github.com/anaibol/natifier/issues"
   },
   "preferGlobal": true,
   "bin": {
-    "goo-maps": "."
+    "natifier": "."
   },
-  "homepage": "https://github.com/anaibol/goo-maps#readme",
+  "homepage": "https://github.com/anaibol/natifier#readme",
   "devDependencies": {
     "babel-preset-es2015": "^6.3.13",
     "babel-preset-stage-0": "^6.3.13",

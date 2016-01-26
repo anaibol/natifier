@@ -5,26 +5,54 @@ import Tray from 'tray'
 
 import { argv } from 'yargs'
 
-function createWindow (url) {
+const createWindow = url => {
   // Create the browser window.
-  const win = new BrowserWindow({width: 1900, height: 1080, title: 'Arch Maps', autoHideMenuBar: true})
 
-  win.loadURL(url)
+  const win = new BrowserWindow({
+    width: 1900,
+    height: 1080,
+    autoHideMenuBar: true,
+    icon: './icon.png',
+    title: 'Google Maps'
+  })
+
+  win.maximize()
+  // win.setFullScreen(true)
+
+  win.loadURL('http://' + url)
   // win.loadURL('file://' + __dirname + '/index.html')
 
   // Emitted when the window is closed.
-  win.on('closed', () => {
+  // win.on('closed', () => {
     // Dereference the window object, usually you would store windows
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
-    win = null
+    // win = null
+  // })
+
+  var webContents = win.webContents
+  win.setTitle(webContents.getTitle())
+
+  webContents.on('dom-ready', e => {
+    // console.log('dom-ready')
+    // console.log(e.sender);
+
+    // console.log(e.sender.getTitle());
   })
 
-  win.on('close', function(e) {
-    e.preventDefault()
-    this.hide()
+
+  webContents.on('page-favicon-updated', e => {
+    console.log('page-favicon-updated');
+    // console.log(e)
+  })
+  webContents.on('did-finish-load', e => {
+    console.log('did-finish-load');
   })
 
+  win.on('close', e => {
+    // e.preventDefault()
+    // this.hide()
+  })
 
   win.on('minimize', () => {
     this.hide()
@@ -34,21 +62,23 @@ function createWindow (url) {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 app.on('ready', () => {
-  const appIcon = new Tray('./icon2.png')
+    const appIcon = new Tray('./icon2.png')
 
-  appIcon.setToolTip('This is my application.')
+    appIcon.setToolTip('This is my application.')
 
-  // Show window and remove tray when clicked
-  appIcon.on('click', () => {
-    win.show()
-    // this.remove()
-  })
+    // Show window and remove tray when clicked
+    appIcon.on('click', () => {
+      win.show()
+      // this.remove()
+    })
 
-  createWindow(argv.url)
+    if (argv.url) {
+      createWindow(argv.url)
+    }
 })
 
 // Quit when all windows are closed.
-app.on('window-all-closed', function () {
+app.on('window-all-closed', () => {
   // On OS X it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
   if (process.platform !== 'darwin') {
@@ -73,7 +103,10 @@ var shouldQuit = app.makeSingleInstance((commandLine, workingDirectory) => {
   console.log(commandLine);
   console.log(workingDirectory);
 
-  // createWindow(argv.url)
+  if (argv.url) {
+    createWindow(argv.url)
+  }
+
   // app.quit()
   return false
 })

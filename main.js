@@ -5,6 +5,10 @@ import Tray from 'tray'
 
 import { argv } from 'yargs'
 
+const configStore = require('./config')
+
+let webs = configStore.get('webs')
+
 const createWindow = url => {
   // Create the browser window.
 
@@ -15,6 +19,12 @@ const createWindow = url => {
     icon: './icon.png',
     title: 'Google Maps'
   })
+
+  if (!webs.filter(web => (web.url === url)).length) {
+    webs.push({url: url, title: 'Whatsapp 2'})
+    configStore.set('webs', webs)
+  }
+
 
   win.maximize()
   // win.setFullScreen(true)
@@ -35,18 +45,18 @@ const createWindow = url => {
 
   webContents.on('dom-ready', e => {
     // console.log('dom-ready')
-    // console.log(e.sender);
+    // console.log(e.sender)
 
-    // console.log(e.sender.getTitle());
+    // console.log(e.sender.getTitle())
   })
 
 
   webContents.on('page-favicon-updated', e => {
-    console.log('page-favicon-updated');
+    console.log('page-favicon-updated')
     // console.log(e)
   })
   webContents.on('did-finish-load', e => {
-    console.log('did-finish-load');
+    console.log('did-finish-load')
   })
 
   win.on('close', e => {
@@ -63,8 +73,15 @@ const createWindow = url => {
 // initialization and is ready to create browser windows.
 app.on('ready', () => {
     const appIcon = new Tray('./icon2.png')
+    let menu = []
 
-    appIcon.setToolTip('This is my application.')
+    webs.forEach(web => {
+      menu.push({label: web.url, type: 'radio'})
+    })
+
+    const contextMenu = Menu.buildFromTemplate(menu)
+     appIcon.setToolTip('This is my application.')
+     appIcon.setContextMenu(contextMenu)
 
     // Show window and remove tray when clicked
     appIcon.on('click', () => {
@@ -100,8 +117,8 @@ var shouldQuit = app.makeSingleInstance((commandLine, workingDirectory) => {
   //   if (myWindow.isMinimized()) myWindow.restore()
   //   myWindow.focus()
   // }
-  console.log(commandLine);
-  console.log(workingDirectory);
+  console.log(commandLine)
+  console.log(workingDirectory)
 
   if (argv.url) {
     createWindow(argv.url)

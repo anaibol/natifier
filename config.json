@@ -1,6 +1,1 @@
-{
-  "webs": [{
-      "url": "web.whatsapp.com",
-      "title": "Whatsapp"
-    }]
-}
+{"webs":[{"url":"web.whatsapp.com","title":"Whatsapp"},{"url":["hotmail.com"],"title":"Whatsapp 2"},{"url":["docs.google.com"],"title":"Whatsapp 2"},{"url":["web.whatsapp.com"],"title":"Whatsapp 2"},{"url":["web.whatsapp.com"],"title":"Whatsapp 2"},{"url":["docs.google.com"],"title":"Whatsapp 2"},{"url":["google.com"],"title":"Whatsapp 2"},{"url":["google.com"],"title":"Whatsapp 2"},{"url":["google.com"],"title":"Whatsapp 2"},{"url":["google.com"],"title":"Whatsapp 2"},{"url":["web.whatsapp.com"],"title":"Whatsapp 2"}]}

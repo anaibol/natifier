@@ -12,7 +12,7 @@ function readConfigFile() {
   }
 }
 
-module.exports = {
+export default {
   set: (key, value) => {
     const config = readConfigFile()
     config[key] = value
